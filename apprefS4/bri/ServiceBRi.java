@@ -28,9 +28,11 @@ class ServiceBRi implements Runnable {
 			serv = service.getDeclaredConstructor(Socket.class).newInstance(client);
 			System.out.println(serv);
 			// invoquer run() pour cette instance ou la lancer dans un thread à part 
-			new Thread(serv).start();
+			Thread n = new Thread(serv);
+			n.start();
+			while(n.isAlive()){Thread.sleep(1000);}
 			}
-		catch (IOException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		catch (IOException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | InterruptedException e) {
 			//Fin du service
 		}
 
