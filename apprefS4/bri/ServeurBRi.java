@@ -7,11 +7,13 @@ import java.net.*;
 
 public class ServeurBRi implements Runnable {
 	private ServerSocket listen_socket;
+	private TypeUser type;
 	
 	// Cree un serveur TCP - objet de la classe ServerSocket
-	public ServeurBRi(int port) {
+	public ServeurBRi(int port, TypeUser t) {
 		try {
 			listen_socket = new ServerSocket(port);
+			type = t;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -22,6 +24,7 @@ public class ServeurBRi implements Runnable {
 	// qui va la traiter.
 	public void run() {
 		try {
+			//TODO : on veut que ServiceProgrammeur & ServiceAmateur extend ServiceBri, et on veut ici définir quel ServiceBri sera lancé par le serveur selon le TypeUser
 			while(true){
 				new ServiceBRi(listen_socket.accept()).start();
 				System.out.println("nouvelle connexion");
