@@ -8,11 +8,11 @@ import java.net.*;
 import examples.ServiceInversion;
 
 
-class ServiceBRi implements Runnable {
+class ServiceAmaBri implements Runnable {
 	
 	private Socket client;
 	
-	ServiceBRi(Socket socket) {
+	public ServiceAmaBri(Socket socket) {
 		client = socket;
 	}
 
