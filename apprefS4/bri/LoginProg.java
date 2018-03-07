@@ -31,9 +31,14 @@ public class LoginProg {
 		}
 		doc.getDocumentElement().normalize();
 		
-		NodeList listNode = doc.getElementsByTagName("programers");
+		Element parent = (Element) doc.getElementsByTagName("programers").item(0);
+		NodeList listNode = parent.getElementsByTagName("connection");
+		System.out.println(listNode.getLength());
 		for(int i = 0; i < listNode.getLength(); i++){
-			Element child =(Element) listNode.item(i);
+			Element child = (Element) listNode.item(i); 
+			Element loginP =(Element) child.getChildNodes().item(1);
+			Element pwdP =(Element) child.getChildNodes().item(3);
+			System.out.println(loginP.getTextContent() + " " + pwdP.getTextContent());
 			if(login.equals(child.getElementsByTagName("login").item(0).getTextContent())){
 				if(password.equals(child.getElementsByTagName("password").item(0).getTextContent())){
 					return true;
