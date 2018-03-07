@@ -1,5 +1,6 @@
 package bri;
 
+
 import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
@@ -33,8 +34,8 @@ public class LoginProg {
 		NodeList listNode = doc.getElementsByTagName("programers");
 		for(int i = 0; i < listNode.getLength(); i++){
 			Element child =(Element) listNode.item(i);
-			if(login.equals(child.getElementsByTagName("login").item(0))){
-				if(password.equals(child.getElementsByTagName("password").item(0))){
+			if(login.equals(child.getElementsByTagName("login").item(0).getTextContent())){
+				if(password.equals(child.getElementsByTagName("password").item(0).getTextContent())){
 					return true;
 				}
 			}
