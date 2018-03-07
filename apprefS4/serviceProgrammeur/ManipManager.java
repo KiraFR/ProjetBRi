@@ -42,17 +42,17 @@ public class ManipManager {
 	}
 
 	public static void updateService(String readLine) {
-	
+		//TODO : remplire
 	}
 	public static void enableService(String classeName){
-		
+		//TODO : remplire
 	}
 	
 	public static void uninstallService(String classeName){
-		
+		//TODO : remplire
 	}
 	
 	public static void disableService(String classeName){
-		
+		//TODO : remplire
 	}
 }
