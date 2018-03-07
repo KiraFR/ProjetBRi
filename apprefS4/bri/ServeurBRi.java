@@ -27,7 +27,7 @@ public class ServeurBRi implements Runnable {
 			//TODO : on veut que ServiceProgrammeur & ServiceAmateur extend ServiceBri, et on veut ici définir quel ServiceBri sera lancé par le serveur selon le TypeUser
 			while(true){
 				new ServiceBRi(listen_socket.accept()).start();
-				System.out.println("nouvelle connexion");
+				System.out.println("nouvelle connexion amateur");
 			}
 		}
 		catch (IOException e) { 

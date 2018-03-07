@@ -1,6 +1,6 @@
 package bri;
 
 public enum TypeUser {
-	LAMA,
+	AMA,
 	PROG;
 }
