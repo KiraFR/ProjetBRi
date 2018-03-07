@@ -19,7 +19,9 @@ public class ManipManager {
 		
 	}
 	
-	public static void enableService(String classeName){
+	
+	
+	public static void installService(String classeName){
 		
 		try {
 			URLClassLoader urlcl = new URLClassLoader(url){
@@ -37,5 +39,20 @@ public class ManipManager {
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
 		}
+	}
+
+	public static void updateService(String readLine) {
+	
+	}
+	public static void enableService(String classeName){
+		
+	}
+	
+	public static void uninstallService(String classeName){
+		
+	}
+	
+	public static void disableService(String classeName){
+		
 	}
 }
