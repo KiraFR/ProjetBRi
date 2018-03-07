@@ -22,15 +22,21 @@ public class ServiceRegistry {
 	@SuppressWarnings("unchecked")
 	public static void addService(Class<?> c) throws Exception {
 		// vérifier la conformité par introspection
-		if(!(Service.class.isAssignableFrom(c)
-				&& !(Modifier.isAbstract(c.getModifiers()))
-				&& Modifier.isPublic(c.getModifiers())
-				&& Modifier.isPublic(c.getConstructor(Socket.class).getModifiers())
-				&& c.getConstructor(Socket.class).getExceptionTypes().length == 0
-				&& hasPrivateFinalSocketField(c)
-				&& hasToStringueMethod(c)
-				))
-			throw new Exception("Classe envoyée n'est pas un service conforme.");
+		if(!Service.class.isAssignableFrom(c))
+			throw new Exception("Classe envoyée n'extend pas Service");
+		if(Modifier.isAbstract(c.getModifiers()))
+			throw new Exception("Classe envoyéeest abstraite");
+		if(!Modifier.isPublic(c.getModifiers()))
+			throw new Exception("Classe envoyée n'est pas publique");
+		if(!Modifier.isPublic(c.getConstructor(Socket.class).getModifiers()))
+			throw new Exception("Classe envoyée ne contiens pas de constructeur public avec un paramètre de type Socket");
+		if(!(c.getDeclaredConstructor(Socket.class).getExceptionTypes().length == 0))
+			throw new Exception("Le constructeur public avec un paramètre Socket renvoie des exceptions");
+		if(!hasPrivateFinalSocketField(c))
+			throw new Exception("Classe envoyée ne contiens pas d'attribut Socket privé");
+		if(!hasToStringueMethod(c))
+			throw new Exception("Classe envoyée n'a pas de méthode : public String toStringue()");
+				
 		
 		// si non conforme --> exception avec message clair
 		// si conforme, ajout au vector

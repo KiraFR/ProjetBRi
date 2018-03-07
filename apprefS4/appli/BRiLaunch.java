@@ -6,9 +6,11 @@ import java.util.Scanner;
 
 import bri.ServeurBRi;
 import bri.ServiceRegistry;
+import bri.TypeUser;
 
 public class BRiLaunch {
-	private final static int PORT_SERVICE = 3000;
+	private final static int PORT_PROG = 3000;
+	private final static int PORT_AMA = 3030;
 	
 	public static void main(String[] args) {
 		@SuppressWarnings("resource")
@@ -22,7 +24,8 @@ public class BRiLaunch {
 		System.out.println("A tout instant, en tapant le nom de la classe, vous pouvez l'intégrer");
 		System.out.println("Les clients se connectent au serveur 3000 pour lancer une activité");
 		
-		new Thread(new ServeurBRi(PORT_SERVICE)).start();
+		new Thread(new ServeurBRi(PORT_PROG, TypeUser.PROG)).start();
+		//new Thread(new ServeurBRi(PORT_AMA, TypeUser.AMA)).start();
 		
 		while (true){
 				try {
