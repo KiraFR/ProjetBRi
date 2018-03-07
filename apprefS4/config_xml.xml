@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<programers>
+	<connection>
+		<login>jimmy</login>
+		<password>123</password>
+	</connection>
+	<connection>
+		<login>guillaume</login>
+		<password>123</password>
+	</connection>
+</programers>

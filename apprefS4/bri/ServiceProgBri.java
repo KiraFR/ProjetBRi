@@ -20,14 +20,14 @@ BufferedReader in;
 		client = socket;
 	}
 
-	private void askLogin() throws IOException{
+	private void askLogin() throws Exception{
 		
 		out.println("login : ");
 		String login = in.readLine();
 		out.println("password : ");
 		String pw = in.readLine();
-		//TODO : LoginProg.checkLogin
-		
+		if(!LoginProg.checkLogin(login, pw))
+			throw new Exception("Bad login");
 	}
 	
 	public void run() {
@@ -42,14 +42,22 @@ BufferedReader in;
 			case 1:
 				out.println("##nom de la classe de service à charger : ");
 				ManipManager.enableService(in.readLine());
+				out.println("##service activé. Merci.");
 				break;
 			}
+				
 			}
-		catch (IOException e) {
+		catch (Exception e) {
 			e.printStackTrace(System.err);
+			
+			
 		}
-
-		try {client.close();} catch (IOException e2) {}
+		try {
+			client.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	protected void finalize() throws Throwable {
