@@ -32,18 +32,13 @@ class Application {
 			System.out.println("Connecté au serveur " + s.getInetAddress() + ":"+ s.getPort());
 			
 			String line;
-		// menu et choix du service
+			while(true){
+		// reception
 			line = sin.readLine();
 			System.out.println(line.replaceAll("##", "\n"));
-		// saisie/envoie du choix
+		// envoi
 			sout.println(clavier.readLine());
-			
-		// réception/affichage de la question
-			System.out.println(sin.readLine());
-		// saisie clavier/envoie au service de la réponse
-			sout.println(clavier.readLine());
-		// réception/affichage de la réponse
-			System.out.println(sin.readLine());
+			}
 				
 			
 		}
