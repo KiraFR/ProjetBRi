@@ -5,8 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class ServiceRegistry {
 	// cette classe est un registre de services
@@ -14,28 +14,33 @@ public class ServiceRegistry {
 	// un Vector pour cette gestion est pratique
 
 	static {
-		servicesClasses = new ArrayList<Class<? extends Service>>();
+		servicesClasses = new Vector<Class<? extends Service>>();
 	}
 	private static List<Class<? extends Service>> servicesClasses;
 
 // ajoute une classe de service après contrôle de la norme BLTi
 	@SuppressWarnings("unchecked")
-	public static void addService(Class<?> c) throws Exception {
+	public static void addService(Class<?> c) throws NonConformityException {
 		// vérifier la conformité par introspection
 		if(!Service.class.isAssignableFrom(c))
-			throw new Exception("Classe envoyée n'extend pas Service");
+			throw new NonConformityException("Classe envoyée n'extend pas Service");
 		if(Modifier.isAbstract(c.getModifiers()))
-			throw new Exception("Classe envoyéeest abstraite");
+			throw new NonConformityException("Classe envoyéeest abstraite");
 		if(!Modifier.isPublic(c.getModifiers()))
-			throw new Exception("Classe envoyée n'est pas publique");
+			throw new NonConformityException("Classe envoyée n'est pas publique");
+		try {
 		if(!Modifier.isPublic(c.getConstructor(Socket.class).getModifiers()))
-			throw new Exception("Classe envoyée ne contiens pas de constructeur public avec un paramètre de type Socket");
-		if(!(c.getDeclaredConstructor(Socket.class).getExceptionTypes().length == 0))
-			throw new Exception("Le constructeur public avec un paramètre Socket renvoie des exceptions");
+			throw new NonConformityException("Classe envoyée ne contiens pas de constructeur public avec un paramètre de type Socket");
+		
+			if(!(c.getDeclaredConstructor(Socket.class).getExceptionTypes().length == 0))
+				throw new NonConformityException("Le constructeur public avec un paramètre Socket renvoie des exceptions");
+		} catch (NoSuchMethodException | SecurityException e) {
+			throw new NonConformityException("le constructeur n'est pas conforme.");
+		}
 		if(!hasPrivateFinalSocketField(c))
-			throw new Exception("Classe envoyée ne contiens pas d'attribut Socket privé");
+			throw new NonConformityException("Classe envoyée ne contiens pas d'attribut Socket privé");
 		if(!hasToStringueMethod(c))
-			throw new Exception("Classe envoyée n'a pas de méthode : public String toStringue()");
+			throw new NonConformityException("Classe envoyée n'a pas de méthode : public String toStringue()");
 				
 		
 		// si non conforme --> exception avec message clair
@@ -85,6 +90,27 @@ private static boolean hasPrivateFinalSocketField(Class<?> c) {
 		return result;
 	}
 	
+	public static void checkExists(String classeName) throws ServiceNotFoundException{
+		for(Class <? extends Service> c : servicesClasses){
+			if(c.getName().equals(classeName))
+				return;
+		}
+		throw new bri.ServiceNotFoundException();
+	}
+
+	public static int getServiceIndex(String classeName) throws bri.ServiceNotFoundException{
+		int index = 0;
+		for(Class <? extends Service> c : servicesClasses){
+			if (c.getName().equals(classeName))
+				return index;
+			++index;
+		}
+		throw new bri.ServiceNotFoundException();
+	}
 	
+	public static void removeService(String classeName) throws ServiceNotFoundException {
+		servicesClasses.remove(getServiceIndex(classeName));
+		
+	}
 
 }

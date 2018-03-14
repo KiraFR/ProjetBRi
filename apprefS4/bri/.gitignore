@@ -3,6 +3,15 @@
 /ServiceBRi.class
 /ServiceRegistry.class
 /TypeUser.class
+<<<<<<< HEAD
 /ServiceProgBri.class
 /ServiceAmaBRi.class
 /ServiceAmaBri.class
+=======
+/Login.class
+/LoginProg.class
+>>>>>>> branch 'guillaume' of https://github.com/kira370/ProjetBRi
+/NonConformityException.class
+/ServiceRegistryTest.class
+/ServiceNotFoundException.class
+/ServeurBriAbs.class
