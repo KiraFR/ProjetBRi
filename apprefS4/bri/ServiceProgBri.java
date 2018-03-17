@@ -24,14 +24,16 @@ BufferedReader in;
 		client = socket;
 	}
 
-	private void askLogin() throws Exception{
+	private String askLogin() throws WrongLoginException, IOException{
 		
 		out.println("login : ");
 		String login = in.readLine();
 		out.println("password : ");
 		String pw = in.readLine();
-		if(!LoginProg.checkLogin(login, pw))
-			throw new Exception("Bad login");
+		//TODO : fix checkLogin
+		/*if(!LoginProg.checkLogin(login, pw))
+			throw new WrongLoginException();*/
+		return login;
 	}
 	
 	public void run() {
@@ -39,8 +41,8 @@ BufferedReader in;
 			try{
 			in = new BufferedReader (new InputStreamReader(client.getInputStream ( )));
 			out = new PrintWriter (client.getOutputStream ( ), true);
-			//askLogin();
-				out.println("vous pouvez :##"
+			String name = askLogin();
+				out.println("Bienvenue " + name + "##vous pouvez :##"
 						+ "1 : installer un service##"
 						+ "2 : activer un service##"
 						+ "3 : désinstaller un service##"
@@ -98,6 +100,8 @@ BufferedReader in;
 				} catch (bri.ServiceNotFoundException e) {
 					out.println("Le service n'a pas été trouvé.");
 					e.printStackTrace();
+				} catch (WrongLoginException e) {
+					out.println("Mauvais login");
 				}
 			
 			
