@@ -16,7 +16,7 @@ import java.net.Socket;
  * ainsi que tout service qui pose une question, traite la donnée du client et envoie sa réponse 
  * mais est bien sur susceptible de (nombreuses) améliorations
  */
-class Application {
+class ApplicationProg {
 		private final static int PORT_SERVICE = 3000;
 		private final static String HOST = "localhost"; 
 	
@@ -32,18 +32,13 @@ class Application {
 			System.out.println("Connecté au serveur " + s.getInetAddress() + ":"+ s.getPort());
 			
 			String line;
-		// menu et choix du service
+			while(true){
+		// reception
 			line = sin.readLine();
 			System.out.println(line.replaceAll("##", "\n"));
-		// saisie/envoie du choix
+		// envoi
 			sout.println(clavier.readLine());
-			
-		// réception/affichage de la question
-			System.out.println(sin.readLine());
-		// saisie clavier/envoie au service de la réponse
-			sout.println(clavier.readLine());
-		// réception/affichage de la réponse
-			System.out.println(sin.readLine());
+			}
 				
 			
 		}
