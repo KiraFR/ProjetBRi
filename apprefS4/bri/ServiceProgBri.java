@@ -30,9 +30,8 @@ BufferedReader in;
 		String login = in.readLine();
 		out.println("password : ");
 		String pw = in.readLine();
-		//TODO : fix checkLogin
-		/*if(!LoginProg.checkLogin(login, pw))
-			throw new WrongLoginException();*/
+		if(!XmlHandler.checkLogin(login, pw))
+			throw new WrongLoginException();
 		return login;
 	}
 	
