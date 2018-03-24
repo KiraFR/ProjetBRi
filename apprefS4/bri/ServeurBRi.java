@@ -2,18 +2,20 @@ package bri;
 
 
 import java.io.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.*;
 
 
 public class ServeurBRi implements Runnable {
 	private ServerSocket listen_socket;
-	private Class <? extends Runnable> serviceClass;
+	private Class <? extends Runnable> serverClass;
 	
 	// Cree un serveur TCP - objet de la classe ServerSocket
 	public ServeurBRi(int port, Class <? extends Runnable> c) {
 		try {
 			listen_socket = new ServerSocket(port);
-			serviceClass = c;
+			serverClass = c;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -24,16 +26,33 @@ public class ServeurBRi implements Runnable {
 	// qui va la traiter.
 	public void run() {
 		try {
-			//TODO : on veut que ServiceProgrammeur & ServiceAmateur extend ServiceBri, et on veut ici définir quel ServiceBri sera lancé par le serveur selon le TypeUser
+			Constructor<? extends Runnable> constr = serverClass.getConstructor(Socket.class);
 			while(true){
-				//TODO : on veut lancer la classe de service donnée en argument dans le constructeur, PAS LE SERVICE DIRECTEMENT ! ! !
-				new ServiceProgBri(listen_socket.accept()).start();
-				System.out.println("nouvelle connexion sur " + serviceClass);
+				new Thread(constr.newInstance(listen_socket.accept())).start();
+				System.out.println("nouvelle connexion sur " + serverClass);
 			}
 		}
-		catch (IOException e) { 
-			try {this.listen_socket.close();} catch (IOException e1) {}
-			System.err.println("Pb sur le port d'écoute :"+e);
+		catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -46,4 +65,6 @@ public class ServeurBRi implements Runnable {
 	public void lancer() {
 		(new Thread(this)).start();		
 	}
+	
+	
 }

@@ -16,7 +16,7 @@ import java.net.Socket;
  * ainsi que tout service qui pose une question, traite la donnée du client et envoie sa réponse 
  * mais est bien sur susceptible de (nombreuses) améliorations
  */
-class Application {
+class ApplicationProg {
 		private final static int PORT_SERVICE = 3000;
 		private final static String HOST = "localhost"; 
 	

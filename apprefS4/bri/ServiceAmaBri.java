@@ -5,10 +5,8 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.*;
 
-import examples.ServiceInversion;
 
-
-class ServiceAmaBri implements Runnable {
+public class ServiceAmaBri implements Runnable {
 	
 	private Socket client;
 	
