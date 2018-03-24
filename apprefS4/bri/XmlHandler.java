@@ -84,7 +84,7 @@ public class XmlHandler {
 	
 	
 	
-	public static void enableService(String serviceName) throws Exception {
+	public static void activateService(String serviceName) throws Exception {
 		if(!ServiceExist(serviceName)) throw new Exception("Vous voulez activer un service qui n'existe pas.");
 		Element node = (Element) services.getElementsByTagName(serviceName).item(0);
 		node.getElementsByTagName("public").item(0).setTextContent("true");;
@@ -92,7 +92,7 @@ public class XmlHandler {
 		updatefile();
 	}
 	
-	public static void disableService(String serviceName) throws Exception {
+	public static void desactivateService(String serviceName) throws Exception {
 		if(!ServiceExist(serviceName)) throw new Exception("Vous voulez activer un service qui n'existe pas.");
 		Element node = (Element) services.getElementsByTagName(serviceName).item(0);
 		node.getElementsByTagName("public").item(0).setTextContent("false");
