@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <programers>	
 	<services>
-		<inversion>
-			<class>examples.ServiceInversion</class>
-			<public>false</public>
-		</inversion>
-		<examples.ServiceInversion>
-			<class>examples.ServiceInversion</class>
-			<public>false</public>
-		</examples.ServiceInversion>
-	</services>
+		<service>
+            <name>examples.ServiceInversion</name>
+            <class>examples.ServiceInversion</class>
+            <public>true</public>
+        </service>
+    </services>
 	<connections>
 		<connection>
 			<login>jimmy</login>
