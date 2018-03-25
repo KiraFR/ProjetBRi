@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Vector;
 
+import serviceProgrammeur.ServiceNotInstalledException;
+
 public class ServiceRegistry {
 	// cette classe est un registre de services
 	// partagée en concurrence par les clients et les "ajouteurs" de services,
@@ -90,25 +92,25 @@ private static boolean hasPrivateFinalSocketField(Class<?> c) {
 		return result;
 	}
 	
-	public static void checkExists(String classeName) throws ServiceNotFoundException{
+	public static void checkExists(String classeName) throws ServiceNotInstalledException{
 		for(Class <? extends Service> c : servicesClasses){
 			if(c.getName().equals(classeName))
 				return;
 		}
-		throw new bri.ServiceNotFoundException();
+		throw new ServiceNotInstalledException();
 	}
 
-	public static int getServiceIndex(String classeName) throws bri.ServiceNotFoundException{
+	public static int getServiceIndex(String classeName) throws ServiceNotInstalledException{
 		int index = 0;
 		for(Class <? extends Service> c : servicesClasses){
 			if (c.getName().equals(classeName))
 				return index;
 			++index;
 		}
-		throw new bri.ServiceNotFoundException();
+		throw new ServiceNotInstalledException();
 	}
 	
-	public static void removeService(String classeName) throws ServiceNotFoundException {
+	public static void removeService(String classeName) throws ServiceNotInstalledException {
 		servicesClasses.remove(getServiceIndex(classeName));
 		
 	}

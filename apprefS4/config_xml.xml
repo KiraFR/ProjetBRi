@@ -5,6 +5,10 @@
 			<class>examples.ServiceInversion</class>
 			<public>false</public>
 		</inversion>
+		<examples.ServiceInversion>
+			<class>examples.ServiceInversion</class>
+			<public>false</public>
+		</examples.ServiceInversion>
 	</services>
 	<connections>
 		<connection>

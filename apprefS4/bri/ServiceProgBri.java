@@ -4,14 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
-
-import javax.management.ServiceNotFoundException;
 
 import serviceProgrammeur.ManipManager;
 import serviceProgrammeur.ServiceAlreadyInstalledException;
 import serviceProgrammeur.ServiceNotInstalledException;
+import serviceProgrammeur.XmlHandler;
 
 public class ServiceProgBri implements Runnable {
 
@@ -30,9 +28,9 @@ BufferedReader in;
 		String login = in.readLine();
 		out.println("password : ");
 		String pw = in.readLine();
-		//TODO : fix checkLogin
-		/*if(!LoginProg.checkLogin(login, pw))
-			throw new WrongLoginException();*/
+		
+		if(!XmlHandler.checkLogin(login, pw))
+			throw new WrongLoginException();
 		return login;
 	}
 	
@@ -97,11 +95,10 @@ BufferedReader in;
 				} catch (ServiceAlreadyInstalledException e) {
 					out.println("Ce service est déjà installé. Essayez une mise à jour à la place");
 					e.printStackTrace();
-				} catch (bri.ServiceNotFoundException e) {
-					out.println("Le service n'a pas été trouvé.");
-					e.printStackTrace();
 				} catch (WrongLoginException e) {
 					out.println("Mauvais login");
+				} catch (ServiceNotInstalledException e) {
+					out.println("Le service demandé n'est pas installé");
 				}
 			
 			
