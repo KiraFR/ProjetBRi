@@ -17,3 +17,4 @@
 /ServeurBriAbs.class
 /WrongLoginException.class
 /XmlHandler.class
+/ServiceNotEnabledException.class

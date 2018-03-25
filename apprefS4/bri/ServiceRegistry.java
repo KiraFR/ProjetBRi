@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Vector;
 
 import serviceProgrammeur.ServiceNotInstalledException;
+import serviceProgrammeur.XmlHandler;
 
 public class ServiceRegistry {
 	// cette classe est un registre de services
@@ -17,9 +18,17 @@ public class ServiceRegistry {
 
 	static {
 		servicesClasses = new Vector<Class<? extends Service>>();
+		
 	}
 	private static List<Class<? extends Service>> servicesClasses;
+	
 
+	public static void init(){
+		for(String s : XmlHandler.getServices()){
+			System.out.println(s);
+		}
+	}
+	
 // ajoute une classe de service après contrôle de la norme BLTi
 	@SuppressWarnings("unchecked")
 	public static void addService(Class<?> c) throws NonConformityException {
@@ -74,7 +83,9 @@ private static boolean hasPrivateFinalSocketField(Class<?> c) {
 }
 
 // renvoie la classe de service (numService -1)	
-	public static Class<? extends Service> getServiceClass(int numService) {
+	public static Class<? extends Service> getServiceClass(int numService) throws ServiceNotInstalledException, ServiceNotEnabledException {
+		if(!XmlHandler.getServicesAccess(servicesClasses.get(numService-1).getName()))
+			throw new ServiceNotEnabledException();
 		return  servicesClasses.get(numService-1);
 	}
 	
@@ -83,10 +94,17 @@ private static boolean hasPrivateFinalSocketField(Class<?> c) {
 		String result = "Activités présentes :";
 		for(Class<?> c : servicesClasses){
 			try {
-				result += "##" + (servicesClasses.indexOf(c)+1) + " "  + c.getMethod("toStringue").invoke(null, null);
+				
+				result += "##" + (servicesClasses.indexOf(c)+1) + " "  + c.getMethod("toStringue").invoke(null, null) + " : ";
+				if(XmlHandler.getServicesAccess(c.getName()))
+					result += "activé";
+				else
+					result += "désactivé";
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (ServiceNotInstalledException e) {
+				System.err.println("service " + c.getName() + "pas trouvé dans fichier de configuration mais présent dans la liste des services enregistrés");
 			}
 		}
 		return result;

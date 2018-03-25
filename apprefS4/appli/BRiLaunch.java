@@ -11,6 +11,7 @@ import javax.swing.plaf.synth.SynthSpinnerUI;
 import bri.NonConformityException;
 import bri.ServeurBRi;
 import bri.ServiceProgBri;
+import bri.ServiceRegistry;
 import serviceProgrammeur.ManipManager;
 import serviceProgrammeur.ServiceAlreadyInstalledException;
 import bri.ServiceAmaBri;
@@ -23,7 +24,7 @@ public class BRiLaunch {
 		@SuppressWarnings("resource")
 		BufferedReader clavier = new BufferedReader(new InputStreamReader(System.in));
 		
-		
+		ServiceRegistry.init();
 		
 		System.out.println("Bienvenue dans votre gestionnaire dynamique d'activité BRi");
 		System.out.println("Pour ajouter une activité, celle-ci doit être présente sur votre serveur ftp");
@@ -47,8 +48,6 @@ public class BRiLaunch {
 				} catch (ServiceAlreadyInstalledException e) {
 					System.err.println("service deja installé");
 				}
-			
-		
 		}
 	}
 }
