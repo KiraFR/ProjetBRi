@@ -31,7 +31,7 @@ public class ManipManager {
 			ServiceRegistry.checkExists(classeName);
 			throw new ServiceAlreadyInstalledException();
 		}
-		catch(bri.ServiceNotFoundException e){}
+		catch(ServiceNotInstalledException e){}
 			
 		
 		
@@ -47,26 +47,52 @@ public class ManipManager {
 		System.out.println("classe chargée : " + c);
 		urlcl.close();
 		ServiceRegistry.addService(c);
+		try {
+			XmlHandler.installService(classeName, classeName);
+		} catch (ServiceAlreadyInstalledException e) {
+			System.err.println("le service " + classeName + " existe deja dans le fichier de configuration");
+		}
 	}
 
-	public static void updateService(String classeName) throws ClassNotFoundException, IOException, NonConformityException, ServiceAlreadyInstalledException, bri.ServiceNotFoundException {
+	public static void updateService(String classeName) throws ClassNotFoundException, IOException, NonConformityException, ServiceAlreadyInstalledException, ServiceNotInstalledException {
 		
 			uninstallService(classeName);
 			installService(classeName);
 			
+			try {
+				XmlHandler.uninstallService(classeName);
+				XmlHandler.installService(classeName, classeName);
+			} catch (ServiceNotInstalledException e) {
+				System.err.println("Le service " + classeName + " n'a pas été trouvé dans le fichier de configuration");
+			} catch (ServiceAlreadyInstalledException e) {
+				System.err.println("Le service " + classeName + " est déjà installé dans le fichier de configuration");
+			}
 		
 	}
-	public static void enableService(String classeName){
-		//TODO : remplire
+	public static void enableService(String classeName) {
+		try {
+			XmlHandler.activateService(classeName);
+		} catch (ServiceNotInstalledException e) {
+			System.err.println("le service " + classeName + " n'a pas été trouvé dans le fichier de configuration");
+		}
 	}
 	
-	public static void uninstallService(String classeName) throws bri.ServiceNotFoundException{
+	public static void uninstallService(String classeName) throws ServiceNotInstalledException {
 		ServiceRegistry.checkExists(classeName);
 		ServiceRegistry.removeService(classeName);
+		try {
+			XmlHandler.uninstallService(classeName);
+		} catch (ServiceNotInstalledException e) {
+			System.err.println("le service " + classeName + " n'as pas été trouvé dans le fichier de configuration");
+		}
 	}
 	
-	public static void disableService(String classeName){
-		//TODO : remplire
+	public static void disableService(String classeName) {
+		try {
+			XmlHandler.desactivateService(classeName);
+		} catch (ServiceNotInstalledException e) {
+			System.err.println("le service " + classeName + " n'a pas été trouvé dans le fichier de configuration");
+		}
 	}
 
 	public static String printServices() {

@@ -1,4 +1,4 @@
-package bri;
+package serviceProgrammeur;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +9,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -59,8 +61,8 @@ public class XmlHandler {
 	}
 	
 	
-	public static void installService(String serviceName,String serviceClass) throws Exception {
-		if(ServiceExist(serviceName)) throw new Exception("Le service est d�j� install�");
+	public static void installService(String serviceName,String serviceClass) throws ServiceAlreadyInstalledException  {
+		if(ServiceExist(serviceName)) throw new ServiceAlreadyInstalledException();
 		Element node = doc.createElement(serviceName);
 		
 		Element className = doc.createElement("class");
@@ -76,8 +78,8 @@ public class XmlHandler {
 		updatefile();
 	}
 	
-	public static void uninstallService(String serviceName) throws Exception {
-		if(!ServiceExist(serviceName)) throw new Exception("Vous voulez desinstaller un service qui n'existe pas.");
+	public static void uninstallService(String serviceName) throws ServiceNotInstalledException {
+		if(!ServiceExist(serviceName)) throw new ServiceNotInstalledException();
 		services.removeChild(services.getElementsByTagName(serviceName).item(0));
 		
 		
@@ -86,16 +88,16 @@ public class XmlHandler {
 	
 	
 	
-	public static void activateService(String serviceName) throws Exception {
-		if(!ServiceExist(serviceName)) throw new Exception("Vous voulez activer un service qui n'existe pas.");
+	public static void activateService(String serviceName) throws ServiceNotInstalledException {
+		if(!ServiceExist(serviceName)) throw new ServiceNotInstalledException();
 		Element node = (Element) services.getElementsByTagName(serviceName).item(0);
 		node.getElementsByTagName("public").item(0).setTextContent("true");;
 		
 		updatefile();
 	}
 	
-	public static void desactivateService(String serviceName) throws Exception {
-		if(!ServiceExist(serviceName)) throw new Exception("Vous voulez activer un service qui n'existe pas.");
+	public static void desactivateService(String serviceName) throws ServiceNotInstalledException {
+		if(!ServiceExist(serviceName)) throw new ServiceNotInstalledException();
 		Element node = (Element) services.getElementsByTagName(serviceName).item(0);
 		node.getElementsByTagName("public").item(0).setTextContent("false");
 		
@@ -130,13 +132,23 @@ public class XmlHandler {
 		return false;
 	}
 	
-	private static void updatefile() throws Exception {
+	private static void updatefile() {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(xmlFile);
-		transformer.transform(source, result);
+		Transformer transformer;
+		try {
+			transformer = transformerFactory.newTransformer();
+		
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(xmlFile);
+			transformer.transform(source, result);
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
