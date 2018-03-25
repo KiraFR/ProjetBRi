@@ -26,6 +26,14 @@ public class ServiceRegistry {
 	public static void init(){
 		for(String s : XmlHandler.getServices()){
 			System.out.println(s);
+			try {
+				
+				addService(Class.forName(s));
+			} catch (ClassNotFoundException e) {
+				System.err.println("Classe " + s + "non présente");
+			} catch (NonConformityException e) {
+				System.err.println("Classe " + s + "non conforme : " + e.getMessage());
+			}
 		}
 	}
 	

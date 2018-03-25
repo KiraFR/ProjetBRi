@@ -69,7 +69,7 @@ public class XmlHandler {
 		Element className = doc.createElement("class");
 		className.appendChild(doc.createTextNode(serviceClass));
 		Element boolPublic = doc.createElement("public");
-		boolPublic.appendChild(doc.createTextNode("false"));
+		boolPublic.appendChild(doc.createTextNode("true"));
 
 		node.appendChild(name);
 		node.appendChild(className);
@@ -140,12 +140,9 @@ public class XmlHandler {
 		ArrayList<String> list = new ArrayList<>();
 		for(int i = 0; i < listNode.getLength(); i++){
 			Element ch = (Element) listNode.item(i);
-			Node nodePublic = ch.getElementsByTagName("public").item(0);
 			Node nodeClass = ch.getElementsByTagName("class").item(0);
-			String publicAccess = nodePublic.getTextContent();
-			if(Boolean.parseBoolean(publicAccess)){
 				list.add(nodeClass.getTextContent());
-			}
+			
 		}
 		return list;
 	}

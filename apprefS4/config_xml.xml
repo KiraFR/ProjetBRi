@@ -4,7 +4,7 @@
 		<service>
             <name>examples.ServiceInversion</name>
             <class>examples.ServiceInversion</class>
-            <public>false</public>
+            <public>true</public>
         </service>
     </services>
 	<connections>
